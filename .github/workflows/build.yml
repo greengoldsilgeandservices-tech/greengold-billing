@@ -3,61 +3,35 @@ name: Build Windows EXE
 on:
   push:
     branches: [ main, master ]
-  workflow_dispatch:  # Manual trigger button bhi hoga
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build-windows:
     runs-on: windows-latest
     
     steps:
-      # Step 1: Code download karo
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Node.js setup karo
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
-      # Step 3: Dependencies install karo
       - name: Install dependencies
         run: npm install
 
-      # Step 4: EXE build karo
       - name: Build Windows EXE
         run: npm run dist
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Step 5: Tayyar EXE ko upload karo (download ke liye)
       - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
           name: GreenGold-Billing-Setup
           path: dist/*.exe
           retention-days: 30
-
-      # Step 6: Release bhi banao (optional - permanent download link)
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-        with:
-          tag_name: v1.0.${{ github.run_number }}
-          name: Green Gold Billing v1.0.${{ github.run_number }}
-          body: |
-            ## Green Gold Silage — Billing Software
-            
-            ### Download karein:
-            Neeche **Assets** mein se `.exe` file download karein aur install karein.
-            
-            ### Features:
-            - Bill / Invoice banana
-            - Customer management
-            - Udhar ledger
-            - Stock management
-            - Reports
-          files: dist/*.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
