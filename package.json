@@ -1,38 +1,26 @@
 {
   "name": "greengold-billing",
   "version": "1.0.0",
-  "description": "Green Gold Silage Billing Software",
+  "description": "GreenGold Silage and Services Billing Software",
   "main": "main.js",
+  "author": "GreenGold",
   "scripts": {
     "start": "electron .",
     "dist": "electron-builder --win --x64"
   },
   "build": {
     "appId": "com.greengold.billing",
-    "productName": "Green Gold Billing",
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": ["x64"]
-        }
-      ],
-      "icon": "assets/icon.ico"
+    "productName": "GreenGold Billing",
+    "directories": {
+      "output": "dist"
     },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "installerIcon": "assets/icon.ico",
-      "uninstallerIcon": "assets/icon.ico",
-      "installerHeaderIcon": "assets/icon.ico",
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "Green Gold Billing"
+    "win": {
+      "target": "nsis"
     },
     "files": [
       "main.js",
       "src/**/*",
-      "assets/**/*"
+      "package.json"
     ]
   },
   "devDependencies": {
